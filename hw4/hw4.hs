@@ -20,12 +20,11 @@ data Tree a = Leaf | Node Integer (Tree a) a (Tree a) deriving (Show, Eq)
 addNode v (d, Leaf) = (d, Node 0 Leaf v Leaf)
 addNode v (d, Node i Leaf v' Leaf) = ((d + 1), Node 1 (Node 0 Leaf v Leaf) v' Leaf)
 addNode v (d, Node i ln v' Leaf) = (d, Node d ln v' (Node 0 Leaf v Leaf))
---addNode v (d, Node (d-1) ln@(Node _ _ _ _) v' Leaf)  = Node i ln v' (addNode v (d, Leaf)
 addNode v (d, Node i ln@(Node j _ _ _) v' rn@(Node k _ _ _)) | j <= k = (d,  Node i (getNode $ addNode v (d-1,ln)) v' rn)
                                                              | otherwise = (d, Node i ln v' (getNode $ addNode v (d-1,rn)))
 getNode (d, n) = n
---nodeDepth d n@(Node v _ _ _) = nodeDepth (Node d 
 
+foldTree :: [a] -> Tree a
 foldTree = snd . foldr addNode (2, Leaf)
 
 
