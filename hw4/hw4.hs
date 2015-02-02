@@ -57,3 +57,7 @@ addReturn nv | nv < 1 = ""
 
 xor :: [Bool] -> Bool
 xor = foldr (\a b -> if a == True then not b else b) False
+
+
+map' :: (a -> b) -> [a] -> [b]
+map' f = foldr (\x b -> f x : b) []
