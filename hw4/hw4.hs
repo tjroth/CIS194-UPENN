@@ -51,3 +51,9 @@ spaces sp = concat $ replicate sp " "
 addReturn nv | nv < 1 = ""
              | otherwise = "\n"
 
+
+----------------------------------------------------------------
+--Exercise 3
+
+xor :: [Bool] -> Bool
+xor = foldr (\a b -> if a == True then not b else b) False
