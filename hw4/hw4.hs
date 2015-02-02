@@ -58,6 +58,16 @@ addReturn nv | nv < 1 = ""
 xor :: [Bool] -> Bool
 xor = foldr (\a b -> if a == True then not b else b) False
 
-
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x b -> f x : b) []
+
+
+----------------------------------------------------------------
+--Exercise 4
+
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram n =  foldr (\a b -> if a `elem` b then b else a:b) [] $ map (\x -> 2 * x + 1) $ filter (\x -> x <= n) $ concat $ map (\(i,j) -> [i,j]) $ filter (\(i,j) -> i `notElem` bad && j `notElem` bad) $ filter (\(i,j) -> j >= i) $ cartProd n
+  where
+    bad = exclude $ cartProd n
+    exclude all = map (\(i,j) -> i + j + (2 * i * j)) all
+    cartProd n = [(i,j) | i <- [1..n], j <- [1..n]]
