@@ -71,3 +71,12 @@ sieveSundaram n =  foldr (\a b -> if a `elem` b then b else a:b) [] $ map (\x ->
     bad = exclude $ cartProd n
     exclude all = map (\(i,j) -> i + j + (2 * i * j)) all
     cartProd n = [(i,j) | i <- [1..n], j <- [1..n]]
+
+
+
+sieveSundaram' :: Integer -> [Integer]
+sieveSundaram' n = map (\x -> 2*x + 1) $ filter sieve [1..n]
+    where sieve x = (notElem x $ map (\(i,j) -> i + j + 2*i*j) $ cartProd' [1..n] [1..n])
+
+cartProd' :: [a] -> [b] -> [(a,b)]
+cartProd' xs ys = [(x,y) | x <- xs, y <- ys]
