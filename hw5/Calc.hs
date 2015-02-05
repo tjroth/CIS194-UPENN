@@ -15,3 +15,7 @@ eval (Mul e1 e2) = (eval e1) * (eval e2)
 -----------------------------------------
 -- Exercise 2
 
+evalStr :: String -> Maybe Integer
+evalStr s = case (parseExp Lit Add Mul s) of
+  Nothing -> Nothing
+  Just e -> Just $ eval e
