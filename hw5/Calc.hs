@@ -19,3 +19,20 @@ evalStr :: String -> Maybe Integer
 evalStr s = case (parseExp Lit Add Mul s) of
   Nothing -> Nothing
   Just e -> Just $ eval e
+
+
+-----------------------------------------
+-- Exercise 3
+
+class Expr a where
+  lit :: Integer -> a
+  add :: a -> a -> a
+  mul :: a -> a -> a
+
+instance Expr ExprT where
+  lit i = Lit i
+  add e1 e2 = Add e1 e2
+  mul e1 e2 = Mul e1 e2
+
+reify :: ExprT -> ExprT
+reify = id
