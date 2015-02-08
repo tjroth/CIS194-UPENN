@@ -1,9 +1,16 @@
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 module Calc where
 
-import ExprT
+--import ExprT
 import Parser
+import StackVM
 
+--Early exercises are commented out so that the #5 will compile --
+-- the definitions of ex1, ex2 and portions of ex3 clash with
+-- StackVM import
 
+{--
 -----------------------------------------
 -- Exercise 1
 
@@ -20,7 +27,7 @@ evalStr s = case (parseExp Lit Add Mul s) of
   Nothing -> Nothing
   Just e -> Just $ eval e
 
-
+--}
 -----------------------------------------
 -- Exercise 3
 
@@ -28,7 +35,7 @@ class Expr a where
   lit :: Integer -> a
   add :: a -> a -> a
   mul :: a -> a -> a
-
+{--
 instance Expr ExprT where
   lit i = Lit i
   add e1 e2 = Add e1 e2
@@ -36,14 +43,14 @@ instance Expr ExprT where
 
 reify :: ExprT -> ExprT
 reify = id
-
+--}
 -----------------------------------------
 -- Exercise 4
 
 instance Expr Integer where
   lit i = i
   add i1 i2 = i1 + i2
-  mul i1 i2 = i1 + i2
+  mul i1 i2 = i1 * i2
 
 instance Expr Bool where
   lit b | b <= 0 = False
@@ -67,3 +74,16 @@ newtype Mod7 = Mod7 Integer deriving (Eq, Show)
 
 testExp :: Expr a => Maybe a
 testExp = parseExp lit add mul "(3 * -4) + 5"
+
+-----------------------------------------
+-- Exercise 5
+--type Program = [StackExp]
+
+instance Expr Program where
+  lit a = [PushI a]
+  add x y = x ++ y ++ [Add]
+  mul x y = x ++ y ++ [Mul]
+
+
+compile :: String -> Maybe Program
+compile = parseExp lit add mul
