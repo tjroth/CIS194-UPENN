@@ -20,7 +20,7 @@ streamToList :: Stream a -> [a]
 streamToList (Stream v s) = v : (streamToList s)
 
 instance Show a => Show (Stream a) where
-  show s = show $ take 10 $ streamToList s
+  show s = show $ take 50 $ streamToList s
 
 sampleStream a = Stream (a) $ sampleStream (a + 1)
 
@@ -33,4 +33,17 @@ streamMap :: (a -> b) -> Stream a -> Stream b
 streamMap f (Stream a s) = Stream (f a) (streamMap f s)
 
 streamFromSeed :: (a -> a) -> a -> Stream a
-streamFromSeed f seed = Stream a (streamFromSeed f (f a))
+streamFromSeed f a = Stream a (streamFromSeed f (f a))
+
+-------------------------------
+--Exercise 5
+nats :: Stream Integer
+nats = streamFromSeed succ 0
+
+ruler :: Stream Integer
+ruler = streamMap rFn (streamFromSeed (+1) 1)
+  where
+    rFn :: Integer -> Integer
+    rFn n | n == 0 = 0
+          | odd n = 0
+          | otherwise = 1 + (rFn (n `div` 2))
