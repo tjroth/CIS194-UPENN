@@ -23,3 +23,14 @@ instance Show a => Show (Stream a) where
   show s = show $ take 10 $ streamToList s
 
 sampleStream a = Stream (a) $ sampleStream (a + 1)
+
+-------------------------------
+--Exercise 4
+streamRepeat :: a -> Stream a
+streamRepeat a = Stream a $ streamRepeat a
+
+streamMap :: (a -> b) -> Stream a -> Stream b
+streamMap f (Stream a s) = Stream (f a) (streamMap f s)
+
+streamFromSeed :: (a -> a) -> a -> Stream a
+streamFromSeed rule seed = Stream seed (streamFromSeed rule (rule seed))
