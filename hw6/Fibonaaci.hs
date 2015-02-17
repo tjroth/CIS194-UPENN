@@ -33,4 +33,4 @@ streamMap :: (a -> b) -> Stream a -> Stream b
 streamMap f (Stream a s) = Stream (f a) (streamMap f s)
 
 streamFromSeed :: (a -> a) -> a -> Stream a
-streamFromSeed rule seed = Stream seed (streamFromSeed rule (rule seed))
+streamFromSeed f seed = Stream a (streamFromSeed f (f a))
