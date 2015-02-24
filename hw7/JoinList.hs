@@ -20,7 +20,6 @@ tag (Append m _ _) = m
 
 -----------------------------------------
 -- exercise 2
-
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
 indexJ i (Single m a) = if (i == 0) then (Just a) else Nothing
