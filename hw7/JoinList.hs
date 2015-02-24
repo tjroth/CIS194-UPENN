@@ -16,8 +16,6 @@ tag (Single m a) = m
 tag (Append m _ _) = m
 
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
-(+++) Empty jl = jl
-(+++) jl Empty = jl
 (+++) a b = Append (mappend (tag a) (tag b)) a b
 
 -----------------------------------------
