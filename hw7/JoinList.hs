@@ -23,4 +23,25 @@ tag (Append m _ _) = m
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
 indexJ i (Single m a) = if (i == 0) then (Just a) else Nothing
-indexJ i (Append m a b) = undefined
+indexJ i (Append m a b) | i < sizeOf a = indexJ i a
+                        | i == sizeOf a || i > sizeOf a = indexJ (i - (sizeOf a)) b
+  where sizeOf = getSize . size . tag
+
+
+
+
+
+
+testList :: JoinList Size String
+testList = (Append (Size 4)
+                ( Append (Size 2) 
+                    (Single (Size 1) "trick joke")
+                    (Single (Size 1) "happy dude")
+                )
+                ( Append (Size 2) 
+                    (Single (Size 1) "smile corn")
+                    (Single (Size 1) "drown duck")
+                )
+           )
+
+testIndex1 = indexJ 0 testList
