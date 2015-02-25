@@ -27,21 +27,14 @@ indexJ i (Append m a b) | i < sizeOf a = indexJ i a
                         | i == sizeOf a || i > sizeOf a = indexJ (i - (sizeOf a)) b
   where sizeOf = getSize . size . tag
 
-
-
-
-
-
-testList :: JoinList Size String
-testList = (Append (Size 4)
+sampleJ :: JoinList Size String
+sampleJ = (Append (Size 4)
                 ( Append (Size 2) 
-                    (Single (Size 1) "trick joke")
-                    (Single (Size 1) "happy dude")
+                    (Single (Size 1) "Haskell")
+                    (Single (Size 1) "Curry")
                 )
                 ( Append (Size 2) 
-                    (Single (Size 1) "smile corn")
-                    (Single (Size 1) "drown duck")
+                    (Single (Size 1) "Monad")
+                    (Single (Size 1) "Monoid")
                 )
            )
-
-testIndex1 = indexJ 0 testList
