@@ -38,3 +38,10 @@ sampleJ = (Append (Size 4)
                     (Single (Size 1) "Monoid")
                 )
            )
+
+
+dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JointList b a
+dropJ = undefined
+
+takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JointList b a
+takeJ = undefined
