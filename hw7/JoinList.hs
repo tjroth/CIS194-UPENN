@@ -40,8 +40,18 @@ sampleJ = (Append (Size 4)
            )
 
 
-dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JointList b a
-dropJ = undefined
+dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+dropJ _ Empty = Empty
+dropJ 0 jl@(Single m a) = jl
+dropJ i jl@(Single m a) = Empty
+dropJ i (Append m a b) | i == (getSize . size $ m) || i > (getSize . size $ m)  = Empty
+                       | otherwise = case compare i (sizeOf a) of
+                           GT -> dropJ (i - (sizeOf a)) b
+                           EQ -> dropJ (i - (sizeOf a)) b
+                           LT -> Append (( tag (dropJ i a)) <> (tag b)) (dropJ i a) b
+  where
+    sizeOf = getSize . size . tag
 
-takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JointList b a
+
+takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 takeJ = undefined
