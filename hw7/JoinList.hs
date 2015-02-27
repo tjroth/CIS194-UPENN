@@ -54,4 +54,13 @@ dropJ i (Append m a b) | i == (getSize . size $ m) || i > (getSize . size $ m)  
 
 
 takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
-takeJ = undefined
+takeJ _ Empty = Empty
+takeJ i jl@(Single m a) = if i == 0 then Empty else jl
+takeJ i jl@(Append m a b) | i == sizeM m || i > sizeM m = jl
+                          | otherwise = case compare i (sizeT a) of
+                            LT -> takeJ i a
+                            EQ -> takeJ i a
+                            GT -> Append ((tag a) <> (tag (takeJ ((sizeT b)-i) b))) a (takeJ ((sizeT b) -i) b)
+  where
+    sizeM = getSize . size
+    sizeT = sizeM . tag
