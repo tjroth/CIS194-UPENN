@@ -1,5 +1,11 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving, FlexibleInstances, TypeSynonymInstances #-}
+module JoinList where
+
 import Data.Monoid
 import Sized
+import Scrabble
+import Buffer
+import Editor
 
 
 data JoinList m a = Empty
@@ -64,3 +70,27 @@ takeJ i jl@(Append m a b) | i == sizeM m || i > sizeM m = jl
   where
     sizeM = getSize . size
     sizeT = sizeM . tag
+
+
+-----------------------------------------
+-- exercise 3
+scoreLine :: String -> JoinList Score String
+scoreLine s = Single (scoreString s) s
+
+
+-----------------------------------------
+-- exercise 4
+
+instance Buffer (JoinList (Score, Size) String) where
+  toString jl = show jl
+  fromString s = foldr (+++) Empty (map (\s -> (Single (scoreString s, Size 1) s) ) (lines s))
+  line n b = indexJ n b
+  replaceLine n s b = (takeJ n b) +++ (Single (scoreString s, Size 1) s) +++ (dropJ (n+1) b)
+  numLines = getSize . size . tag
+  value x = getSize (size (tag x))
+
+
+main = runEditor editor $ (Single (scoreString s, Size 1) s)
+  where
+    s = "Oh my, haskell is awesome!!!"
+  
